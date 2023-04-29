@@ -1,0 +1,52 @@
+---
+- name: Create IAM User, Group and attach policy
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    aws_access_key: "YOUR_ACCESS_KEY"
+    aws_secret_key: "YOUR_SECRET_KEY"
+    iam_user_name: "testuser"
+    iam_group_name: "testgroup"
+    policy_name: "testpolicy"
+    policy_json: '{"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": "s3:*", "Resource": "*"}]}'
+
+  tasks:
+  - name: Create IAM Group
+    iam_group:
+      name: "{{ iam_group_name }}"
+      state: present
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+
+  - name: Create IAM User
+    iam_user:
+      name: "{{ iam_user_name }}"
+      state: present
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+
+  - name: Add IAM User to Group
+    iam_group_membership:
+      name: "{{ iam_user_name }}"
+      groups: "{{ iam_group_name }}"
+      state: present
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+
+  - name: Create IAM Policy
+    iam_policy:
+      name: "{{ policy_name }}"
+      policy: "{{ policy_json }}"
+      state: present
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+
+  - name: Attach IAM Policy to Group
+    iam_group_policy:
+      name: "{{ iam_group_name }}"
+      policy_name: "{{ policy_name }}"
+      state: present
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+

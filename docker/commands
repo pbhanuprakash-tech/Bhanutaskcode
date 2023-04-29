@@ -1,0 +1,8 @@
+docker build -t my-nginx-image .
+docker run -d -p 80:80 -v /var/log/nginx:/var/log/nginx --log-driver local --log-opt max-size=10m --log-opt max-file=3 my-nginx-image
+docker ps
+docker logs <container-id>
+docker build -t my-image .
+docker run -v /mnt/data:/app/data my-image
+docker logs -t --tail=100 my-container > container-logs.txt
+

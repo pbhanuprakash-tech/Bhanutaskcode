@@ -1,0 +1,15 @@
+---
+- name: Install Nginx and print endpoint
+  hosts: target_server
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Print endpoint with custom message
+      debug:
+        msg: "Nginx installed. Access the server at http://{{ ansible_host }}/"
+

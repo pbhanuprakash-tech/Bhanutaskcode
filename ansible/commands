@@ -1,0 +1,7 @@
+ansible-playbook playbook.yaml -i inventory.ini
+
+in the inventoery file we need to add out localhost IP like below 
+
+[localhost]
+127.0.0.1 ansible_connection=local
+
